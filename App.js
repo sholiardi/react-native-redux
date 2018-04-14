@@ -11,19 +11,33 @@ import { createStore } from "redux";
 import { User } from './components/User';
 import { Main } from './components/Main';
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case "ADD":
-            state = state + action.payload;
-            break;
-        case "SUBTRACT":
-            state = state - action.payload;
-            break;
-    }
-    return state;
+const initialState = {
+  result: 1,
+  lastValues: [],
+  username: "Max"
 };
 
-const store = createStore(reducer, 1);
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "ADD":
+      state = {
+        ...state,
+        result: state.result + action.payload,
+        lastValues: [...state.lastValues, action.payload]
+      };
+      break;
+    case "SUBTRACT":
+      state = {
+        ...state,
+        result: state.result - action.payload,
+        lastValues: [...state.lastValues, action.payload]
+      };
+      break;
+  }
+  return state;
+};
+
+const store = createStore(reducer);
 
 class App extends Component<Props> {
 
