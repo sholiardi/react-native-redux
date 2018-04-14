@@ -6,7 +6,8 @@ import {
   View,
   Alert
 } from 'react-native';
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger';
 
 import { User } from './components/User';
 import { Main } from './components/Main';
@@ -74,8 +75,19 @@ class App extends Component<Props> {
 
   render() {
 
+    const myLogger = (state) => (next) => (action) => {
+      // console.log("Logged Action: ", action);
+      next(action);
+    };
+
+    const store = createStore(
+      combineReducers({mathReducer, userReducer}),
+      {},
+      applyMiddleware(myLogger, createLogger())
+    );
+
     store.subscribe(() => {
-      console.log("Store updated!", store.getState());
+      // console.log("Store updated!", store.getState());
     });
 
     store.dispatch({
