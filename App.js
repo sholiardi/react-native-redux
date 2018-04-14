@@ -6,18 +6,15 @@ import {
   View,
   Alert
 } from 'react-native';
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
 
 import { User } from './components/User';
 import { Main } from './components/Main';
 
-const initialState = {
+const mathReducer = (state = {
   result: 1,
-  lastValues: [],
-  username: "Max"
-};
-
-const reducer = (state = initialState, action) => {
+  lastValues: []
+}, action) => {
   switch (action.type) {
     case "ADD":
       state = {
@@ -37,7 +34,28 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-const store = createStore(reducer);
+const userReducer = (state = {
+  name: "Max",
+  age: 27
+}, action) => {
+  switch (action.type) {
+    case "SET_NAME":
+      state = {
+        ...state,
+        name: action.payload
+      };
+      break;
+    case "SET_AGE":
+      state = {
+        ...state,
+        age: action.payload
+      };
+      break;
+  }
+  return state;
+};
+
+const store = createStore(combineReducers({mathReducer, userReducer}));
 
 class App extends Component<Props> {
 
@@ -73,6 +91,11 @@ class App extends Component<Props> {
     store.dispatch({
       type: "SUBTRACT",
       payload: 80
+    });
+
+    store.dispatch({
+      type: "SET_AGE",
+      payload: 30
     });
 
     return (
