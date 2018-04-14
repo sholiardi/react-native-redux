@@ -3,11 +3,27 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Alert
 } from 'react-native';
+import { createStore } from "redux";
 
 import { User } from './components/User';
 import { Main } from './components/Main';
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "ADD":
+            state = state + action.payload;
+            break;
+        case "SUBTRACT":
+            state = state - action.payload;
+            break;
+    }
+    return state;
+};
+
+const store = createStore(reducer, 1);
 
 class App extends Component<Props> {
 
@@ -25,6 +41,26 @@ class App extends Component<Props> {
   }
 
   render() {
+
+    store.subscribe(() => {
+      console.log("Store updated!", store.getState());
+    });
+
+    store.dispatch({
+      type: "ADD",
+      payload: 100
+    });
+
+    store.dispatch({
+      type: "ADD",
+      payload: 22
+    });
+
+    store.dispatch({
+      type: "SUBTRACT",
+      payload: 80
+    });
+
     return (
       <View style={styles.container}>
         <Main changeUsername={this.changeUsername.bind(this)} />
