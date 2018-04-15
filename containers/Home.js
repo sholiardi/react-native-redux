@@ -6,8 +6,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import { User } from './components/User';
-import { Main } from './components/Main';
+import { User } from '../components/User';
+import { Main } from '../components/Main';
 
 class Home extends Component<Props> {
 
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    user: state.userReducer,
-    math: state.mathReducer
+    user: state.user,
+    math: state.math
   };
 };
 
