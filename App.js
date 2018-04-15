@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Alert
-} from 'react-native';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
+import { Provider } from 'react-redux';
 
-import { User } from './components/User';
-import { Main } from './components/Main';
+import Home from './Home';
 
 const mathReducer = (state = {
   result: 1,
@@ -59,20 +52,6 @@ const userReducer = (state = {
 const store = createStore(combineReducers({mathReducer, userReducer}));
 
 class App extends Component<Props> {
-
-  constructor() {
-    super();
-    this.state = {
-      username: "Max"
-    };
-  }
-
-  changeUsername(newName) {
-    this.setState({
-      username: newName
-    });
-  }
-
   render() {
 
     const myLogger = (state) => (next) => (action) => {
@@ -111,21 +90,12 @@ class App extends Component<Props> {
     });
 
     return (
-      <View style={styles.container}>
-        <Main changeUsername={this.changeUsername.bind(this)} />
-        <User username={this.state.username} />
-      </View>
+      <Provider store={store}>
+        <Home />
+      </Provider>
     );
+
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-});
 
 export default App;
